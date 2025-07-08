@@ -17,7 +17,6 @@
       color: white;
     }
 
-    /* Background slideshow */
     .slideshow {
       position: fixed;
       width: 100%;
@@ -47,46 +46,62 @@
       55%, 90% { opacity: 0; }
     }
 
-    /* Heading animation */
     .heading {
       text-align: center;
       font-size: 3em;
       margin-top: 80px;
       animation: textFade 3s ease-in-out forwards;
       opacity: 0;
+      transform: translateY(-30px);
     }
     @keyframes textFade {
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Cake styling */
-    .cake-container {
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 30px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
       text-align: center;
-      margin-top: 60px;
+      z-index: 10;
     }
-    #cake {
-      width: 250px;
-      animation: appear 2s ease-in-out forwards;
-      opacity: 0;
-    }
-    @keyframes appear {
-      to { opacity: 1; }
-    }
-
-    /* Cake cut button */
-    #cutButton {
-      margin-top: 20px;
+    .popup button {
       padding: 10px 25px;
       font-size: 18px;
       background: #ff4081;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
-      animation: appear 2s ease-in-out forwards;
     }
 
-    /* Final message */
+    .cake-container {
+      display: none;
+      text-align: center;
+      margin-top: 40px;
+      animation: fadeIn 2s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #cake {
+      width: 260px;
+      max-width: 90%;
+      animation: floatIn 3s ease-in-out forwards;
+      opacity: 0;
+    }
+    @keyframes floatIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .final-message {
       display: none;
       font-size: 2em;
@@ -99,15 +114,12 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    /* Fireworks */
-    .fireworks {
+    canvas {
       position: fixed;
-      width: 100%;
-      height: 100%;
       top: 0;
       left: 0;
       pointer-events: none;
-      z-index: 1;
+      z-index: 0;
     }
   </style>
 </head>
@@ -119,52 +131,65 @@
 
   <div class="heading" id="heading">Happy Anniversary Mummy & Papa ❤️</div>
 
-  <div class="cake-container">
-    <img src="cake_transparent.png" id="cake" />
-    <br />
-    <button id="cutButton" onclick="cutCake()">Cut the Cake 🎂</button>
+  <div class="popup" id="popup">
+    <p>Let's cut the cake 🎂</p>
+    <button onclick="startCake()">OK</button>
+  </div>
+
+  <div class="cake-container" id="cakeContainer">
+    <img src="images/cake.png" id="cake" style="transform: translateY(30px);">
   </div>
 
   <div class="final-message" id="finalMessage">
-    "You both are the definition of true love. Wishing the best parents ever a Happy Anniversary! 🥰💖"
+    You are the best Mummy Papa in the world! ❤️
   </div>
 
-  <canvas class="fireworks" id="fireworksCanvas"></canvas>
+  <canvas id="fireworks"></canvas>
 
   <audio id="bgMusic" autoplay loop>
-    <source src="song.mp3" type="audio/mpeg">
+    <source src="song.mp3" type="audio/mp3">
   </audio>
 
   <script>
     const heading = document.getElementById("heading");
+    const popup = document.getElementById("popup");
+    const cakeContainer = document.getElementById("cakeContainer");
     const cake = document.getElementById("cake");
-    const cutButton = document.getElementById("cutButton");
     const finalMsg = document.getElementById("finalMessage");
-    const canvas = document.getElementById("fireworksCanvas");
+    const canvas = document.getElementById("fireworks");
     const ctx = canvas.getContext("2d");
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    function cutCake() {
-      cutButton.style.display = "none";
-      cake.style.transform = "scale(0.9) rotate(-2deg)";
-      cake.style.transition = "0.5s ease";
+    setTimeout(() => {
+      popup.style.display = "block";
+    }, 3500);
 
+    function startCake() {
+      popup.style.display = "none";
+      cakeContainer.style.display = "block";
       setTimeout(() => {
-        finalMsg.style.display = "block";
-        fireworks();
-      }, 1000);
+        cutCake();
+      }, 2000);
     }
 
-    function fireworks() {
+    function cutCake() {
+      cake.style.transform = "scale(0.95) rotate(-3deg)";
+      cake.style.transition = "0.8s ease";
+      finalMsg.style.display = "block";
+      startFireworks();
+      document.getElementById("bgMusic").play();
+    }
+
+    function startFireworks() {
       let particles = [];
       for (let i = 0; i < 100; i++) {
         particles.push({
           x: canvas.width / 2,
           y: canvas.height / 2,
-          dx: Math.random() * 8 - 4,
-          dy: Math.random() * 8 - 4,
+          dx: Math.random() * 6 - 3,
+          dy: Math.random() * 6 - 3,
           radius: Math.random() * 2 + 1,
           color: `hsl(${Math.random() * 360}, 100%, 60%)`
         });
@@ -183,7 +208,7 @@
         });
       }, 30);
 
-      setTimeout(() => clearInterval(interval), 3000);
+      setTimeout(() => clearInterval(interval), 4000);
     }
   </script>
 </body>
