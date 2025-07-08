@@ -1,22 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Happy Anniversary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body, html {
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      color: white;
       overflow: hidden;
+      color: white;
     }
+
     .slideshow {
       position: fixed;
       width: 100%;
       height: 100%;
-      z-index: -1;
+      z-index: -2;
     }
+
     .slide {
       position: absolute;
       width: 100%;
@@ -26,45 +30,123 @@
       opacity: 0;
       animation: fade 10s infinite;
     }
+
     .slide:nth-child(1) {
       background-image: url('images/bg1.jpeg');
       animation-delay: 0s;
     }
+
     .slide:nth-child(2) {
       background-image: url('images/bg2.jpeg');
       animation-delay: 5s;
     }
+
     @keyframes fade {
-      0%, 95%, 100% { opacity: 0; }
-      45%, 50% { opacity: 1; }
+      0%, 100% { opacity: 1; }
+      45%, 50% { opacity: 0; }
     }
+
     .overlay {
-      background-color: rgba(0,0,0,0.4);
       position: absolute;
       width: 100%;
       height: 100%;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background-color: rgba(0,0,0,0.5);
+      z-index: -1;
     }
-    h1 {
-      font-size: 3em;
+
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       text-align: center;
-      z-index: 2;
+    }
+
+    h1 {
+      font-size: 3rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    p.quote {
+      font-size: 1.2rem;
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #ff69b4;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 5px #fff; }
+      50% { box-shadow: 0 0 20px #ff69b4; }
+      100% { box-shadow: 0 0 5px #fff; }
+    }
+
+    #final-msg {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+      display: none;
+      animation: fadeIn 3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
+  <audio autoplay loop>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="slideshow">
     <div class="slide"></div>
     <div class="slide"></div>
   </div>
-  <div class="overlay">
-    <h1>Happy Anniversary ❤️</h1>
+
+  <div class="overlay"></div>
+
+  <div class="content">
+    <h1>Happy Anniversary, Mummy Papa! ❤️</h1>
+    <p class="quote">A love like yours is the reason fairy tales exist.</p>
+    <button class="btn" onclick="startSurprise()">Click to Cut the Cake 🎂</button>
   </div>
-  <audio autoplay loop>
-    <source src="song.mp3" type="audio/mpeg">
-  </audio>
+
+  <canvas id="fireworksCanvas"></canvas>
+
+  <div id="final-msg">Best Mummy Papa in the World ❤️</div>
+
+  <script src="fireworks.js"></script>
+  <script>
+    function startSurprise() {
+      startFireworks();
+      document.getElementById('final-msg').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
