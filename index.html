@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>Happy Anniversary</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body, html {
       height: 100%;
-      overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
       color: white;
+      overflow: hidden;
     }
 
     .slideshow {
       position: fixed;
       width: 100%;
       height: 100%;
-      z-index: -2;
+      z-index: -1;
     }
 
     .slide {
@@ -27,8 +26,8 @@
       height: 100%;
       background-size: cover;
       background-position: center;
-      opacity: 0;
       animation: fade 10s infinite;
+      opacity: 0;
     }
 
     .slide:nth-child(1) {
@@ -43,162 +42,67 @@
 
     @keyframes fade {
       0%, 100% { opacity: 1; }
-      45%, 50% { opacity: 0; }
-    }
-
-    .overlay {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      z-index: -1;
-    }
-
-    .content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 2;
+      45%, 95% { opacity: 0; }
     }
 
     h1 {
-      font-size: 2.5rem;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    p.quote {
-      font-size: 1.2rem;
-      margin-top: 15px;
-      font-style: italic;
-    }
-
-    .btn {
-      margin-top: 25px;
-      padding: 12px 24px;
-      font-size: 1rem;
-      background-color: #ff69b4;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      animation: glow 2s infinite;
-    }
-
-    @keyframes glow {
-      0% { box-shadow: 0 0 5px #fff; }
-      50% { box-shadow: 0 0 20px #ff69b4; }
-      100% { box-shadow: 0 0 5px #fff; }
-    }
-
-    #final-msg {
-      position: absolute;
-      bottom: 30px;
-      width: 100%;
       text-align: center;
-      font-size: 1.5rem;
-      display: none;
-      z-index: 2;
-      animation: fadeIn 3s ease forwards;
+      margin-top: 100px;
+      font-size: 48px;
+      animation: fadeIn 4s ease-in-out forwards;
+      opacity: 0;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
       to { opacity: 1; }
     }
 
-    canvas {
+    #cake-container {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    #cake {
+      width: 200px;
+      transition: transform 1s ease-in-out;
+    }
+
+    #cutButton {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      background: pink;
+    }
+
+    .cut {
+      transform: rotateX(90deg) translateY(100px);
+      opacity: 0.5;
+    }
+
+    #finalMessage {
+      display: none;
+      text-align: center;
+      font-size: 30px;
+      margin-top: 50px;
+      animation: fadeIn 2s ease-in-out forwards;
+    }
+
+    #fireworks {
       position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
       pointer-events: none;
-    }
-
-    /* 🎂 CAKE ANIMATION */
-    .cake-container {
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      z-index: 5;
-      animation: none;
-    }
-
-    .cake-container.show {
-      animation: scaleUp 1s ease forwards;
-    }
-
-    @keyframes scaleUp {
-      to { transform: translate(-50%, -50%) scale(1); }
-    }
-
-    .cake {
-      position: relative;
-      width: 120px;
-      height: 150px;
-    }
-
-    .layer {
-      position: absolute;
-      width: 100%;
-      height: 40px;
-      background-color: #f28b82;
-      border-radius: 10px;
-    }
-
-    .layer-bottom { bottom: 0; }
-    .layer-middle { bottom: 40px; }
-    .layer-top { bottom: 80px; }
-
-    .icing {
-      position: absolute;
-      width: 100%;
-      height: 20px;
-      top: 70px;
-      background-color: white;
-      border-radius: 10px;
-      z-index: 1;
-    }
-
-    .candle {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      width: 8px;
-      height: 20px;
-      background-color: #4a148c;
-      transform: translateX(-50%);
-      border-radius: 2px;
-    }
-
-    .candle::before {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: 2px;
-      width: 4px;
-      height: 4px;
-      background-color: yellow;
-      border-radius: 50%;
-      animation: flicker 1s infinite;
-    }
-
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      z-index: 100;
     }
   </style>
 </head>
 <body>
-  <audio id="bgmusic" loop>
-    <source src="song.mp3" type="audio/mpeg">
-    Your browser does not support audio.
+  <audio autoplay loop>
+    <source src="song.mp3" type="audio/mp3" />
   </audio>
 
   <div class="slideshow">
@@ -206,40 +110,32 @@
     <div class="slide"></div>
   </div>
 
-  <div class="overlay"></div>
+  <canvas id="fireworks"></canvas>
 
-  <div class="content">
-    <h1>Happy Anniversary, Mummy Papa! ❤️</h1>
-    <p class="quote">A love like yours is the reason fairy tales exist.</p>
-    <button class="btn" onclick="startSurprise()">Click to Cut the Cake 🎂</button>
+  <h1>Happy Anniversary ❤️</h1>
+
+  <div id="cake-container">
+    <img src="images/cake.png" alt="cake" id="cake">
+    <br>
+    <button id="cutButton">Cut the Cake 🍰</button>
   </div>
 
-  <!-- 🎂 Cake Appears Here -->
-  <div class="cake-container" id="cake">
-    <div class="cake">
-      <div class="layer layer-bottom"></div>
-      <div class="layer layer-middle"></div>
-      <div class="layer layer-top"></div>
-      <div class="icing"></div>
-      <div class="candle"></div>
-    </div>
-  </div>
-
-  <canvas id="fireworksCanvas"></canvas>
-
-  <div id="final-msg">Best Mummy Papa in the World ❤️</div>
+  <div id="finalMessage">You two are the best! Happy Anniversary 🎉</div>
 
   <script src="fireworks.js"></script>
   <script>
-    function startSurprise() {
-      document.getElementById('cake').classList.add('show');
-      document.getElementById('bgmusic').play();
+    const cake = document.getElementById("cake");
+    const cutButton = document.getElementById("cutButton");
+    const finalMessage = document.getElementById("finalMessage");
+
+    cutButton.addEventListener("click", () => {
+      cake.classList.add("cut");
+      cutButton.style.display = "none";
 
       setTimeout(() => {
-        startFireworks();
-        document.getElementById('final-msg').style.display = 'block';
-      }, 3000);
-    }
+        finalMessage.style.display = "block";
+      }, 2000);
+    });
   </script>
 </body>
 </html>
