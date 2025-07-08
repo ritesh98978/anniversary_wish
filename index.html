@@ -4,138 +4,187 @@
   <meta charset="UTF-8" />
   <title>Happy Anniversary</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body, html {
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      color: white;
       overflow: hidden;
+      background: black;
+      color: white;
     }
 
+    /* Background slideshow */
     .slideshow {
       position: fixed;
       width: 100%;
       height: 100%;
       z-index: -1;
     }
-
     .slide {
       position: absolute;
       width: 100%;
       height: 100%;
       background-size: cover;
       background-position: center;
-      animation: fade 10s infinite;
       opacity: 0;
+      animation: fade 16s infinite;
     }
-
     .slide:nth-child(1) {
       background-image: url('images/bg1.jpeg');
       animation-delay: 0s;
     }
-
     .slide:nth-child(2) {
       background-image: url('images/bg2.jpeg');
-      animation-delay: 5s;
+      animation-delay: 8s;
     }
-
     @keyframes fade {
-      0%, 100% { opacity: 1; }
-      45%, 95% { opacity: 0; }
+      0%, 100% { opacity: 0; }
+      10%, 45% { opacity: 1; }
+      55%, 90% { opacity: 0; }
     }
 
-    h1 {
+    /* Heading animation */
+    .heading {
       text-align: center;
-      margin-top: 100px;
-      font-size: 48px;
-      animation: fadeIn 4s ease-in-out forwards;
+      font-size: 3em;
+      margin-top: 80px;
+      animation: textFade 3s ease-in-out forwards;
       opacity: 0;
     }
+    @keyframes textFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    @keyframes fadeIn {
+    /* Cake styling */
+    .cake-container {
+      text-align: center;
+      margin-top: 60px;
+    }
+    #cake {
+      width: 250px;
+      animation: appear 2s ease-in-out forwards;
+      opacity: 0;
+    }
+    @keyframes appear {
       to { opacity: 1; }
     }
 
-    #cake-container {
-      text-align: center;
-      margin-top: 50px;
-    }
-
-    #cake {
-      width: 200px;
-      transition: transform 1s ease-in-out;
-    }
-
+    /* Cake cut button */
     #cutButton {
       margin-top: 20px;
-      padding: 10px 20px;
+      padding: 10px 25px;
       font-size: 18px;
-      cursor: pointer;
+      background: #ff4081;
+      color: white;
       border: none;
-      border-radius: 10px;
-      background: pink;
+      border-radius: 5px;
+      cursor: pointer;
+      animation: appear 2s ease-in-out forwards;
     }
 
-    .cut {
-      transform: rotateX(90deg) translateY(100px);
-      opacity: 0.5;
-    }
-
-    #finalMessage {
+    /* Final message */
+    .final-message {
       display: none;
+      font-size: 2em;
       text-align: center;
-      font-size: 30px;
-      margin-top: 50px;
-      animation: fadeIn 2s ease-in-out forwards;
+      margin-top: 40px;
+      animation: popIn 2s forwards;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
-    #fireworks {
+    /* Fireworks */
+    .fireworks {
       position: fixed;
       width: 100%;
       height: 100%;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       pointer-events: none;
-      z-index: 100;
+      z-index: 1;
     }
   </style>
 </head>
 <body>
-  <audio autoplay loop>
-    <source src="song.mp3" type="audio/mp3" />
-  </audio>
-
   <div class="slideshow">
     <div class="slide"></div>
     <div class="slide"></div>
   </div>
 
-  <canvas id="fireworks"></canvas>
+  <div class="heading" id="heading">Happy Anniversary Mummy & Papa ❤️</div>
 
-  <h1>Happy Anniversary ❤️</h1>
-
-  <div id="cake-container">
-    <img src="images/cake.png" alt="cake" id="cake">
-    <br>
-    <button id="cutButton">Cut the Cake 🍰</button>
+  <div class="cake-container">
+    <img src="cake_transparent.png" id="cake" />
+    <br />
+    <button id="cutButton" onclick="cutCake()">Cut the Cake 🎂</button>
   </div>
 
-  <div id="finalMessage">You two are the best! Happy Anniversary 🎉</div>
+  <div class="final-message" id="finalMessage">
+    "You both are the definition of true love. Wishing the best parents ever a Happy Anniversary! 🥰💖"
+  </div>
 
-  <script src="fireworks.js"></script>
+  <canvas class="fireworks" id="fireworksCanvas"></canvas>
+
+  <audio id="bgMusic" autoplay loop>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
+    const heading = document.getElementById("heading");
     const cake = document.getElementById("cake");
     const cutButton = document.getElementById("cutButton");
-    const finalMessage = document.getElementById("finalMessage");
+    const finalMsg = document.getElementById("finalMessage");
+    const canvas = document.getElementById("fireworksCanvas");
+    const ctx = canvas.getContext("2d");
 
-    cutButton.addEventListener("click", () => {
-      cake.classList.add("cut");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function cutCake() {
       cutButton.style.display = "none";
+      cake.style.transform = "scale(0.9) rotate(-2deg)";
+      cake.style.transition = "0.5s ease";
 
       setTimeout(() => {
-        finalMessage.style.display = "block";
-      }, 2000);
-    });
+        finalMsg.style.display = "block";
+        fireworks();
+      }, 1000);
+    }
+
+    function fireworks() {
+      let particles = [];
+      for (let i = 0; i < 100; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          dx: Math.random() * 8 - 4,
+          dy: Math.random() * 8 - 4,
+          radius: Math.random() * 2 + 1,
+          color: `hsl(${Math.random() * 360}, 100%, 60%)`
+        });
+      }
+
+      const interval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          p.x += p.dx;
+          p.y += p.dy;
+          p.dy += 0.05;
+        });
+      }, 30);
+
+      setTimeout(() => clearInterval(interval), 3000);
+    }
   </script>
 </body>
 </html>
