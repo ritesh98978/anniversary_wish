@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,11 +5,12 @@
   <title>Happy Anniversary</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html {
+    html, body {
+      margin: 0;
+      padding: 0;
       height: 100%;
-      font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
       color: white;
     }
 
@@ -60,10 +60,11 @@
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
+      z-index: 2;
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       animation: bounce 2s infinite;
     }
 
@@ -74,12 +75,12 @@
 
     p.quote {
       font-size: 1.2rem;
-      margin-top: 20px;
+      margin-top: 15px;
       font-style: italic;
     }
 
     .btn {
-      margin-top: 30px;
+      margin-top: 25px;
       padding: 12px 24px;
       font-size: 1rem;
       background-color: #ff69b4;
@@ -97,11 +98,12 @@
 
     #final-msg {
       position: absolute;
-      bottom: 20px;
+      bottom: 30px;
       width: 100%;
       text-align: center;
       font-size: 1.5rem;
       display: none;
+      z-index: 2;
       animation: fadeIn 3s ease forwards;
     }
 
@@ -114,14 +116,89 @@
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 10;
+      z-index: 1;
       pointer-events: none;
+    }
+
+    /* 🎂 CAKE ANIMATION */
+    .cake-container {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      z-index: 5;
+      animation: none;
+    }
+
+    .cake-container.show {
+      animation: scaleUp 1s ease forwards;
+    }
+
+    @keyframes scaleUp {
+      to { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .cake {
+      position: relative;
+      width: 120px;
+      height: 150px;
+    }
+
+    .layer {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      background-color: #f28b82;
+      border-radius: 10px;
+    }
+
+    .layer-bottom { bottom: 0; }
+    .layer-middle { bottom: 40px; }
+    .layer-top { bottom: 80px; }
+
+    .icing {
+      position: absolute;
+      width: 100%;
+      height: 20px;
+      top: 70px;
+      background-color: white;
+      border-radius: 10px;
+      z-index: 1;
+    }
+
+    .candle {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      width: 8px;
+      height: 20px;
+      background-color: #4a148c;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .candle::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 2px;
+      width: 4px;
+      height: 4px;
+      background-color: yellow;
+      border-radius: 50%;
+      animation: flicker 1s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
   </style>
 </head>
 <body>
-  <audio autoplay loop>
+  <audio id="bgmusic" loop>
     <source src="song.mp3" type="audio/mpeg">
+    Your browser does not support audio.
   </audio>
 
   <div class="slideshow">
@@ -137,6 +214,17 @@
     <button class="btn" onclick="startSurprise()">Click to Cut the Cake 🎂</button>
   </div>
 
+  <!-- 🎂 Cake Appears Here -->
+  <div class="cake-container" id="cake">
+    <div class="cake">
+      <div class="layer layer-bottom"></div>
+      <div class="layer layer-middle"></div>
+      <div class="layer layer-top"></div>
+      <div class="icing"></div>
+      <div class="candle"></div>
+    </div>
+  </div>
+
   <canvas id="fireworksCanvas"></canvas>
 
   <div id="final-msg">Best Mummy Papa in the World ❤️</div>
@@ -144,8 +232,13 @@
   <script src="fireworks.js"></script>
   <script>
     function startSurprise() {
-      startFireworks();
-      document.getElementById('final-msg').style.display = 'block';
+      document.getElementById('cake').classList.add('show');
+      document.getElementById('bgmusic').play();
+
+      setTimeout(() => {
+        startFireworks();
+        document.getElementById('final-msg').style.display = 'block';
+      }, 3000);
     }
   </script>
 </body>
