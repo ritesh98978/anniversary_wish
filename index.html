@@ -1,266 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Anniversary</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body, html {
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      background: black;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Anniversary</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: black;
+    }
 
-    .slideshow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-    .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      opacity: 0; /* Starts hidden */
-      animation: fade 16s infinite;
-    }
-    /* Each slide's background image path should be correct */
-    .slide:nth-child(1) {
-      background-image: url('images/bg1.jpeg');
-      animation-delay: 0s;
-    }
-    .slide:nth-child(2) {
-      background-image: url('images/bg2.jpeg');
-      animation-delay: 8s; /* This means it starts fading in 8s after the first one */
-    }
-    @keyframes fade {
-      0% { opacity: 0; }
-      12.5% { opacity: 1; } /* Fade in */
-      37.5% { opacity: 1; } /* Stay visible */
-      50% { opacity: 0; } /* Fade out */
-      100% { opacity: 0; }
-    }
+    .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      animation: fade 16s infinite;
+    }
+    .slide:nth-child(1) {
+      background-image: url('./images/bg1.jpeg'); /* ✅ Replaced with relative path for GitHub Pages */
+      animation-delay: 0s;
+    }
+    .slide:nth-child(2) {
+      background-image: url('./images/bg2.jpeg'); /* ✅ Replaced with relative path for GitHub Pages */
+      animation-delay: 8s;
+    }
+    @keyframes fade {
+      0%, 100% { opacity: 0; }
+      10%, 45% { opacity: 1; }
+      55%, 90% { opacity: 0; }
+    }
 
+    .heading {
+      position: relative;
+      z-index: 2;
+      font-size: 2.5em;
+      color: white;
+      text-align: center;
+      margin-top: 80px;
+      opacity: 0;
+      animation: typing 3s steps(40, end) forwards;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid white;
+      width: 0;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; opacity: 1; }
+    }
 
-    .heading {
-      position: relative;
-      z-index: 2;
-      font-size: 2.5em;
-      color: white;
-      text-align: center;
-      margin-top: 80px;
-      opacity: 0; /* Initially hidden */
-      animation: typing 3s steps(40, end) forwards 1s; /* Starts after 1s */
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 3px solid white;
-      width: 0;
-      max-width: 90%; /* To handle smaller screens */
-      margin-left: auto;
-      margin-right: auto;
-    }
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; opacity: 1; border-right: none; } /* Border disappears at the end */
-    }
+    .popup, .gift-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 30px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      z-index: 10;
+      color: white;
+    }
+    .popup button, .gift-popup button {
+      margin-top: 10px;
+      padding: 10px 25px;
+      font-size: 18px;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-    .popup, .gift-popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px 30px;
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
-      text-align: center;
-      z-index: 10;
-      color: white;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
-    }
-    .popup button, .gift-popup button {
-      margin-top: 10px;
-      padding: 10px 25px;
-      font-size: 18px;
-      background: #ff4081;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .popup button:hover, .gift-popup button:hover {
-      background: #e03372;
-    }
+    #cakeContainer {
+      display: none;
+      text-align: center;
+      margin-top: 60px;
+      z-index: 5;
+      position: relative;
+    }
+    #cake {
+      width: 280px;
+      max-width: 90%;
+      border-radius: 15px;
+      box-shadow: 0 0 40px rgba(255,255,255,0.5);
+      animation: floatIn 3s ease-in-out forwards;
+      opacity: 0;
+    }
+    @keyframes floatIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    #cakeContainer {
-      display: none;
-      text-align: center;
-      margin-top: 60px;
-      z-index: 5;
-      position: relative;
-      transform: translateY(20px); /* Initial position for floatIn */
-    }
-    #cake {
-      width: 280px;
-      max-width: 90%;
-      border-radius: 15px;
-      box-shadow: 0 0 40px rgba(255,255,255,0.5);
-      animation: floatIn 1.5s ease-out forwards; /* Reduced time */
-      opacity: 0;
-      transform: translateY(50px); /* Start lower for a floating effect */
-    }
-    @keyframes floatIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .message-card {
-      background: rgba(255, 255, 255, 0.95); /* Slightly less transparent */
-      color: black;
-      padding: 25px;
-      border-radius: 15px;
-      animation: popIn 1.5s ease forwards;
-      font-size: 1.6em; /* Slightly larger text */
-      line-height: 1.5;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-  </style>
+    .message-card {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 15px;
+      animation: popIn 2s ease forwards;
+      font-size: 1.5em;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-  <div class="slideshow">
-        <div class="slide" style="background-image: url('images/bg1.jpeg');"></div>
-    <div class="slide" style="background-image: url('images/bg2.jpeg');"></div>
-  </div>
+  <div class="slideshow">
+    <div class="slide" style="background-image: url('./images/bg1.jpeg');"></div>
+    <div class="slide" style="background-image: url('./images/bg2.jpeg');"></div>
+  </div>
 
-  <div class="heading" id="heading">Happy Anniversary Mummy & Papa ❤️</div>
+  <div class="heading" id="heading">Happy Anniversary Mummy & Papa ❤️</div>
 
-  <div class="popup" id="popup">
-    <p>Let's cut the cake 🎂</p>
-    <button onclick="startCake()">OK</button>
-  </div>
+  <div class="popup" id="popup">
+    <p>Let's cut the cake 🎂</p>
+    <button onclick="startCake()">OK</button>
+  </div>
 
-  <div id="cakeContainer">
-        <img src="images/cake.jpg" id="cake" alt="Anniversary Cake">
-  </div>
+  <div id="cakeContainer">
+    <img src="./images/cake.jpg" id="cake"> <!-- ✅ Replaced with relative path for GitHub Pages -->
+  </div>
 
-  <canvas id="fireworks"></canvas>
+  <canvas id="fireworks"></canvas>
 
-  <div class="gift-popup" id="gift">
-    <div class="message-card">
-      You are the best Mummy Papa in the world! ❤️<br>
-      May your journey always be filled with love, laughter & light 💖
-    </div>
-  </div>
+  <div class="gift-popup" id="gift">
+    <div class="message-card">
+      You are the best Mummy Papa in the world! ❤️<br>
+      May your journey always be filled with love, laughter & light 💖
+    </div>
+  </div>
 
-    <audio id="bgMusic" autoplay loop>
-    <source src="song.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-  </audio>
+  <audio id="bgMusic" autoplay loop>
+    <source src="song.mp3" type="audio/mp3">
+  </audio>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-      const heading = document.getElementById("heading");
-      const popup = document.getElementById("popup");
-      const cake = document.getElementById("cake");
-      const cakeContainer = document.getElementById("cakeContainer");
-      const music = document.getElementById("bgMusic");
-      const canvas = document.getElementById("fireworks");
-      const ctx = canvas.getContext("2d");
-      const gift = document.getElementById("gift");
+  <script>
+    const heading = document.getElementById("heading");
+    const popup = document.getElementById("popup");
+    const cake = document.getElementById("cake");
+    const cakeContainer = document.getElementById("cakeContainer");
+    const music = document.getElementById("bgMusic");
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    const gift = document.getElementById("gift");
 
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-      // Resize canvas on window resize
-      window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      });
+    setTimeout(() => {
+      popup.style.display = "block";
+    }, 5000);
 
-      setTimeout(() => {
-        popup.style.display = "block";
-      }, 5000); // Popup appears after 5 seconds
+    function startCake() {
+      popup.style.display = "none";
+      cakeContainer.style.display = "block";
+      setTimeout(() => {
+        cutCake();
+      }, 2000);
+    }
 
-      window.startCake = function() { // Made global for onclick
-        popup.style.display = "none";
-        cakeContainer.style.display = "block";
-        // Music will auto-play, but sometimes browsers block it.
-        // It's better to explicitly play on user interaction if autoplay is blocked.
-        music.play().catch(e => console.log("Music play failed:", e));
+    function cutCake() {
+      cake.style.transform = "scale(0.95) rotate(-5deg)";
+      cake.style.transition = "0.6s ease";
+      music.play();
+      startFireworks();
+      setTimeout(() => {
+        gift.style.display = "block";
+      }, 4000);
+    }
 
-        setTimeout(() => {
-          cutCake();
-        }, 1000); // Wait 1 second after showing cake for animation
-      }
-
-      function cutCake() {
-        cake.style.transform = "scale(0.9) rotate(-10deg)"; // More noticeable cut
-        cake.style.transition = "1s ease-out"; // Slower, smoother transition
-        startFireworks();
-        setTimeout(() => {
-          gift.style.display = "block";
-        }, 3000); // Gift message appears after 3 seconds of cutting
-      }
-
-      function startFireworks() {
-        let particles = [];
-        for (let i = 0; i < 300; i++) {
-          particles.push({
-            x: canvas.width / 2,
-            y: canvas.height / 2,
-            dx: Math.random() * 8 - 4, // More spread
-            dy: Math.random() * 8 - 4, // More spread
-            radius: Math.random() * 3 + 2,
-            color: `hsl(${Math.random() * 360}, 100%, 60%)`
-          });
-        }
-        const interval = setInterval(() => {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          particles.forEach((p, index) => {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.fill();
-
-            p.x += p.dx;
-            p.y += p.dy;
-            p.dy += 0.08; // Slightly increased gravity for more realistic fall
-            p.radius *= 0.98; // Particles shrink
-            if (p.radius < 0.5) { // Remove very small particles
-              particles.splice(index, 1);
-            }
-          });
-          if (particles.length === 0) { // Stop interval if no particles left
-            clearInterval(interval);
-          }
-        }, 30);
-      }
-    });
-  </script>
+    function startFireworks() {
+      let particles = [];
+      for (let i = 0; i < 300; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          dx: Math.random() * 6 - 3,
+          dy: Math.random() * 6 - 3,
+          radius: Math.random() * 3 + 2,
+          color: `hsl(${Math.random() * 360}, 100%, 60%)`
+        });
+      }
+      const interval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          p.x += p.dx;
+          p.y += p.dy;
+          p.dy += 0.05;
+        });
+      }, 30);
+      setTimeout(() => clearInterval(interval), 6000);
+    }
+  </script>
 </body>
 </html>
