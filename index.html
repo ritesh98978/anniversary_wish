@@ -1,145 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Anniversary</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body, html {
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      background: black;
-    }
-
-    .slideshow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-    .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      animation: fade 16s infinite;
-    }
-
-    /* ✅ GitHub Pages fix: image path includes 'anniversary_wish/' */
-   .slide:nth-child(1) {
-  background-image: url('/anniversary_wish/images/bg1.jpeg'); /* 🔥 add leading slash */
-}
-.slide:nth-child(2) {
-  background-image: url('/anniversary_wish/images/bg2.jpeg'); /* 🔥 add leading slash */
-}
-
-
-    @keyframes fade {
-      0%, 100% { opacity: 0; }
-      10%, 45% { opacity: 1; }
-      55%, 90% { opacity: 0; }
-    }
-
-    .heading {
-      position: relative;
-      z-index: 2;
-      font-size: 2.5em;
-      color: white;
-      text-align: center;
-      margin-top: 80px;
-      opacity: 0;
-      animation: typing 3s steps(40, end) forwards;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 3px solid white;
-      width: 0;
-    }
-
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; opacity: 1; }
-    }
-
-    .popup, .gift-popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px 30px;
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
-      text-align: center;
-      z-index: 10;
-      color: white;
-    }
-
-    .popup button, .gift-popup button {
-      margin-top: 10px;
-      padding: 10px 25px;
-      font-size: 18px;
-      background: #ff4081;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    #cakeContainer {
-      display: none;
-      text-align: center;
-      margin-top: 60px;
-      z-index: 5;
-      position: relative;
-    }
-
-    #cake {
-      width: 280px;
-      max-width: 90%;
-      border-radius: 15px;
-      box-shadow: 0 0 40px rgba(255,255,255,0.5);
-      animation: floatIn 3s ease-in-out forwards;
-      opacity: 0;
-    }
-
-    @keyframes floatIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .message-card {
-      background: white;
-      color: black;
-      padding: 20px;
-      border-radius: 15px;
-      animation: popIn 2s ease forwards;
-      font-size: 1.5em;
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html { height: 100%; overflow: hidden; font-family: 'Segoe UI', sans-serif; background: black; }
+    .slideshow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+    .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; animation: fade 16s infinite; }
+    .slide:nth-child(1) { background-image: url('/anniversary_wish/images/bg1.jpeg'); animation-delay: 0s; }
+    .slide:nth-child(2) { background-image: url('/anniversary_wish/images/bg2.jpeg'); animation-delay: 8s; }
+    @keyframes fade { 0%, 100% { opacity: 0; } 10%, 45% { opacity: 1; } 55%, 90% { opacity: 0; } }
+    .heading { position: relative; z-index: 2; font-size: 2.5em; color: white; text-align: center; margin-top: 80px; opacity: 0; animation: typing 3s steps(40, end) forwards; white-space: nowrap; overflow: hidden; border-right: 3px solid white; width: 0; }
+    @keyframes typing { from { width: 0; } to { width: 100%; opacity: 1; } }
+    .popup, .gift-popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.1); padding: 20px 30px; border-radius: 12px; backdrop-filter: blur(10px); text-align: center; z-index: 10; color: white; }
+    .popup button, .gift-popup button { margin-top: 10px; padding: 10px 25px; font-size: 18px; background: #ff4081; color: white; border: none; border-radius: 8px; cursor: pointer; }
+    #cakeContainer { display: none; text-align: center; margin-top: 60px; z-index: 5; position: relative; }
+    #cake { width: 280px; max-width: 90%; border-radius: 15px; box-shadow: 0 0 40px rgba(255,255,255,0.5); animation: floatIn 3s ease-in-out forwards; opacity: 0; }
+    @keyframes floatIn { to { opacity: 1; transform: translateY(0); } }
+    canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; }
+    .message-card { background: white; color: black; padding: 20px; border-radius: 15px; animation: popIn 2s ease forwards; font-size: 1.5em; }
+    @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
   </style>
 </head>
 <body>
@@ -147,35 +30,13 @@
     <div class="slide"></div>
     <div class="slide"></div>
   </div>
-
   <div class="heading" id="heading">Happy Anniversary Mummy & Papa ❤️</div>
-
-  <div class="popup" id="popup">
-    <p>Let's cut the cake 🎂</p>
-    <button onclick="startCake()">OK</button>
-  </div>
-
-  <div id="cakeContainer">
-    <!-- ✅ GitHub Pages fix: image path updated -->
-    <img src="anniversary_wish/images/cake.jpg" id="cake" />
-  </div>
-
+  <div class="popup" id="popup"><p>Let's cut the cake 🎂</p><button onclick="startCake()">OK</button></div>
+  <div id="cakeContainer"><img src="/anniversary_wish/images/cake.jpg" id="cake" /></div>
   <canvas id="fireworks"></canvas>
-
-  <div class="gift-popup" id="gift">
-    <div class="message-card">
-      You are the best Mummy Papa in the world! ❤️<br>
-      May your journey always be filled with love, laughter & light 💖
-    </div>
-  </div>
-
-  <!-- ✅ GitHub Pages fix: audio path updated -->
-  <audio id="bgMusic" autoplay loop>
-    <source src="anniversary_wish/song.mp3" type="audio/mp3">
-  </audio>
-
+  <div class="gift-popup" id="gift"><div class="message-card">You are the best Mummy Papa in the world! ❤️<br>May your journey always be filled with love, laughter & light 💖</div></div>
+  <audio id="bgMusic" autoplay loop><source src="/anniversary_wish/song.mp3" type="audio/mp3"></audio>
   <script>
-    const heading = document.getElementById("heading");
     const popup = document.getElementById("popup");
     const cake = document.getElementById("cake");
     const cakeContainer = document.getElementById("cakeContainer");
@@ -183,71 +44,45 @@
     const canvas = document.getElementById("fireworks");
     const ctx = canvas.getContext("2d");
     const gift = document.getElementById("gift");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    setTimeout(() => {
-      popup.style.display = "block";
-    }, 5000);
-
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    setTimeout(() => { popup.style.display = "block"; }, 5000);
     function startCake() {
       popup.style.display = "none";
       cakeContainer.style.display = "block";
-      setTimeout(() => {
-        cutCake();
-      }, 2000);
+      setTimeout(() => { cutCake(); }, 2000);
     }
-
     function cutCake() {
       cake.style.transform = "scale(0.95) rotate(-5deg)";
       cake.style.transition = "0.6s ease";
       music.play();
       startFireworks();
-      setTimeout(() => {
-        gift.style.display = "block";
-      }, 4000);
+      setTimeout(() => { gift.style.display = "block"; }, 4000);
     }
-
-    // ✅ Improved fireworks effect
     function startFireworks() {
       let particles = [];
-
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 300; i++) {
         particles.push({
           x: canvas.width / 2,
           y: canvas.height / 2,
-          dx: Math.random() * 8 - 4,
-          dy: Math.random() * 8 - 4,
+          dx: Math.random() * 6 - 3,
+          dy: Math.random() * 6 - 3,
           radius: Math.random() * 3 + 2,
-          color: `hsl(${Math.random() * 360}, 100%, 60%)`,
-          alpha: 1
+          color: `hsl(${Math.random() * 360}, 100%, 60%)`
         });
       }
-
       const interval = setInterval(() => {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
           p.x += p.dx;
           p.y += p.dy;
           p.dy += 0.05;
-          p.alpha -= 0.01;
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = hslToRgba(p.color, p.alpha);
-          ctx.fill();
         });
-
-        particles = particles.filter(p => p.alpha > 0);
-        if (particles.length === 0) clearInterval(interval);
       }, 30);
-    }
-
-    function hslToRgba(hsl, alpha) {
-      return hsl.replace("hsl", "hsla").replace(")", `, ${alpha})`);
+      setTimeout(() => clearInterval(interval), 6000);
     }
   </script>
 </body>
