@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Happy Anniversary</title>
   <style>
     * {
@@ -34,14 +34,17 @@
       opacity: 0;
       animation: fade 16s infinite;
     }
+
+    /* ✅ GitHub Pages fix: image path includes 'anniversary_wish/' */
     .slide:nth-child(1) {
-      background-image: url('./images/bg1.jpeg'); /* ✅ Replaced with relative path for GitHub Pages */
+      background-image: url('anniversary_wish/images/bg1.jpeg');
       animation-delay: 0s;
     }
     .slide:nth-child(2) {
-      background-image: url('./images/bg2.jpeg'); /* ✅ Replaced with relative path for GitHub Pages */
+      background-image: url('anniversary_wish/images/bg2.jpeg');
       animation-delay: 8s;
     }
+
     @keyframes fade {
       0%, 100% { opacity: 0; }
       10%, 45% { opacity: 1; }
@@ -62,6 +65,7 @@
       border-right: 3px solid white;
       width: 0;
     }
+
     @keyframes typing {
       from { width: 0; }
       to { width: 100%; opacity: 1; }
@@ -81,6 +85,7 @@
       z-index: 10;
       color: white;
     }
+
     .popup button, .gift-popup button {
       margin-top: 10px;
       padding: 10px 25px;
@@ -99,6 +104,7 @@
       z-index: 5;
       position: relative;
     }
+
     #cake {
       width: 280px;
       max-width: 90%;
@@ -107,6 +113,7 @@
       animation: floatIn 3s ease-in-out forwards;
       opacity: 0;
     }
+
     @keyframes floatIn {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -129,6 +136,7 @@
       animation: popIn 2s ease forwards;
       font-size: 1.5em;
     }
+
     @keyframes popIn {
       0% { transform: scale(0.5); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
@@ -137,8 +145,8 @@
 </head>
 <body>
   <div class="slideshow">
-    <div class="slide" style="background-image: url('./images/bg1.jpeg');"></div>
-    <div class="slide" style="background-image: url('./images/bg2.jpeg');"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
   </div>
 
   <div class="heading" id="heading">Happy Anniversary Mummy & Papa ❤️</div>
@@ -149,7 +157,8 @@
   </div>
 
   <div id="cakeContainer">
-    <img src="./images/cake.jpg" id="cake"> <!-- ✅ Replaced with relative path for GitHub Pages -->
+    <!-- ✅ GitHub Pages fix: image path updated -->
+    <img src="anniversary_wish/images/cake.jpg" id="cake" />
   </div>
 
   <canvas id="fireworks"></canvas>
@@ -161,8 +170,9 @@
     </div>
   </div>
 
+  <!-- ✅ GitHub Pages fix: audio path updated -->
   <audio id="bgMusic" autoplay loop>
-    <source src="song.mp3" type="audio/mp3">
+    <source src="anniversary_wish/song.mp3" type="audio/mp3">
   </audio>
 
   <script>
@@ -200,31 +210,45 @@
       }, 4000);
     }
 
+    // ✅ Improved fireworks effect
     function startFireworks() {
       let particles = [];
-      for (let i = 0; i < 300; i++) {
+
+      for (let i = 0; i < 100; i++) {
         particles.push({
           x: canvas.width / 2,
           y: canvas.height / 2,
-          dx: Math.random() * 6 - 3,
-          dy: Math.random() * 6 - 3,
+          dx: Math.random() * 8 - 4,
+          dy: Math.random() * 8 - 4,
           radius: Math.random() * 3 + 2,
-          color: `hsl(${Math.random() * 360}, 100%, 60%)`
+          color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+          alpha: 1
         });
       }
+
       const interval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
         particles.forEach(p => {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = p.color;
-          ctx.fill();
           p.x += p.dx;
           p.y += p.dy;
           p.dy += 0.05;
+          p.alpha -= 0.01;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = hslToRgba(p.color, p.alpha);
+          ctx.fill();
         });
+
+        particles = particles.filter(p => p.alpha > 0);
+        if (particles.length === 0) clearInterval(interval);
       }, 30);
-      setTimeout(() => clearInterval(interval), 6000);
+    }
+
+    function hslToRgba(hsl, alpha) {
+      return hsl.replace("hsl", "hsla").replace(")", `, ${alpha})`);
     }
   </script>
 </body>
