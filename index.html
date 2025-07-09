@@ -53,6 +53,7 @@
       animation: textFade 3s ease-in-out forwards;
       opacity: 0;
       transform: translateY(-30px);
+      z-index: 2;
     }
     @keyframes textFade {
       to { opacity: 1; transform: translateY(0); }
@@ -114,10 +115,21 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
+    .extra-msg {
+      display: none;
+      font-size: 1.5em;
+      text-align: center;
+      margin-top: 20px;
+      color: #ffccff;
+      animation: popIn 2s forwards;
+    }
+
     canvas {
       position: fixed;
       top: 0;
       left: 0;
+      width: 100vw;
+      height: 100vh;
       pointer-events: none;
       z-index: 0;
     }
@@ -143,6 +155,9 @@
   <div class="final-message" id="finalMessage">
     You are the best Mummy Papa in the world! ❤️
   </div>
+  <div class="extra-msg" id="extraMsg">
+    May your love grow stronger with each passing year 💖
+  </div>
 
   <canvas id="fireworks"></canvas>
 
@@ -156,6 +171,7 @@
     const cakeContainer = document.getElementById("cakeContainer");
     const cake = document.getElementById("cake");
     const finalMsg = document.getElementById("finalMessage");
+    const extraMsg = document.getElementById("extraMsg");
     const canvas = document.getElementById("fireworks");
     const ctx = canvas.getContext("2d");
 
@@ -164,33 +180,36 @@
 
     setTimeout(() => {
       popup.style.display = "block";
-    }, 3500);
+    }, 4000);
 
     function startCake() {
       popup.style.display = "none";
       cakeContainer.style.display = "block";
       setTimeout(() => {
         cutCake();
-      }, 2000);
+      }, 2500);
     }
 
     function cutCake() {
       cake.style.transform = "scale(0.95) rotate(-3deg)";
       cake.style.transition = "0.8s ease";
       finalMsg.style.display = "block";
-      startFireworks();
       document.getElementById("bgMusic").play();
+      setTimeout(() => {
+        extraMsg.style.display = "block";
+      }, 2500);
+      startFireworks();
     }
 
     function startFireworks() {
       let particles = [];
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 300; i++) {
         particles.push({
           x: canvas.width / 2,
           y: canvas.height / 2,
           dx: Math.random() * 6 - 3,
           dy: Math.random() * 6 - 3,
-          radius: Math.random() * 2 + 1,
+          radius: Math.random() * 3 + 2,
           color: `hsl(${Math.random() * 360}, 100%, 60%)`
         });
       }
@@ -208,7 +227,7 @@
         });
       }, 30);
 
-      setTimeout(() => clearInterval(interval), 4000);
+      setTimeout(() => clearInterval(interval), 5000);
     }
   </script>
 </body>
