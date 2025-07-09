@@ -36,14 +36,13 @@
     }
 
     /* ✅ GitHub Pages fix: image path includes 'anniversary_wish/' */
-    .slide:nth-child(1) {
-      background-image: url('anniversary_wish/images/bg1.jpeg');
-      animation-delay: 0s;
-    }
-    .slide:nth-child(2) {
-      background-image: url('anniversary_wish/images/bg2.jpeg');
-      animation-delay: 8s;
-    }
+   .slide:nth-child(1) {
+  background-image: url('/anniversary_wish/images/bg1.jpeg'); /* 🔥 add leading slash */
+}
+.slide:nth-child(2) {
+  background-image: url('/anniversary_wish/images/bg2.jpeg'); /* 🔥 add leading slash */
+}
+
 
     @keyframes fade {
       0%, 100% { opacity: 0; }
