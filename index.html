@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Anniversary</title>
   <style>
     * {
@@ -11,17 +12,18 @@
     }
     body, html {
       height: 100%;
-      font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
       background: black;
-      color: white;
     }
 
     .slideshow {
       position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
+      z-index: 1;
     }
     .slide {
       position: absolute;
@@ -47,19 +49,25 @@
     }
 
     .heading {
-      text-align: center;
-      font-size: 3em;
-      margin-top: 80px;
-      animation: textFade 3s ease-in-out forwards;
-      opacity: 0;
-      transform: translateY(-30px);
+      position: relative;
       z-index: 2;
+      font-size: 2.5em;
+      color: white;
+      text-align: center;
+      margin-top: 80px;
+      opacity: 0;
+      animation: typing 3s steps(40, end) forwards;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid white;
+      width: 0;
     }
-    @keyframes textFade {
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; opacity: 1; }
     }
 
-    .popup {
+    .popup, .gift-popup {
       display: none;
       position: fixed;
       top: 50%;
@@ -71,8 +79,10 @@
       backdrop-filter: blur(10px);
       text-align: center;
       z-index: 10;
+      color: white;
     }
-    .popup button {
+    .popup button, .gift-popup button {
+      margin-top: 10px;
       padding: 10px 25px;
       font-size: 18px;
       background: #ff4081;
@@ -82,46 +92,23 @@
       cursor: pointer;
     }
 
-    .cake-container {
+    #cakeContainer {
       display: none;
       text-align: center;
-      margin-top: 40px;
-      animation: fadeIn 2s ease-in-out forwards;
+      margin-top: 60px;
+      z-index: 5;
+      position: relative;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     #cake {
-      width: 260px;
+      width: 280px;
       max-width: 90%;
+      border-radius: 15px;
+      box-shadow: 0 0 40px rgba(255,255,255,0.5);
       animation: floatIn 3s ease-in-out forwards;
       opacity: 0;
     }
     @keyframes floatIn {
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    .final-message {
-      display: none;
-      font-size: 2em;
-      text-align: center;
-      margin-top: 40px;
-      animation: popIn 2s forwards;
-    }
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .extra-msg {
-      display: none;
-      font-size: 1.5em;
-      text-align: center;
-      margin-top: 20px;
-      color: #ffccff;
-      animation: popIn 2s forwards;
     }
 
     canvas {
@@ -132,6 +119,19 @@
       height: 100vh;
       pointer-events: none;
       z-index: 0;
+    }
+
+    .message-card {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 15px;
+      animation: popIn 2s ease forwards;
+      font-size: 1.5em;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
@@ -148,18 +148,18 @@
     <button onclick="startCake()">OK</button>
   </div>
 
-  <div class="cake-container" id="cakeContainer">
-    <img src="images/cake.png" id="cake" style="transform: translateY(30px);">
-  </div>
-
-  <div class="final-message" id="finalMessage">
-    You are the best Mummy Papa in the world! ❤️
-  </div>
-  <div class="extra-msg" id="extraMsg">
-    May your love grow stronger with each passing year 💖
+  <div id="cakeContainer">
+    <img src="images/cake.jpg" id="cake">
   </div>
 
   <canvas id="fireworks"></canvas>
+
+  <div class="gift-popup" id="gift">
+    <div class="message-card">
+      You are the best Mummy Papa in the world! ❤️<br>
+      May your journey always be filled with love, laughter & light 💖
+    </div>
+  </div>
 
   <audio id="bgMusic" autoplay loop>
     <source src="song.mp3" type="audio/mp3">
@@ -168,37 +168,36 @@
   <script>
     const heading = document.getElementById("heading");
     const popup = document.getElementById("popup");
-    const cakeContainer = document.getElementById("cakeContainer");
     const cake = document.getElementById("cake");
-    const finalMsg = document.getElementById("finalMessage");
-    const extraMsg = document.getElementById("extraMsg");
+    const cakeContainer = document.getElementById("cakeContainer");
+    const music = document.getElementById("bgMusic");
     const canvas = document.getElementById("fireworks");
     const ctx = canvas.getContext("2d");
+    const gift = document.getElementById("gift");
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     setTimeout(() => {
       popup.style.display = "block";
-    }, 4000);
+    }, 5000);
 
     function startCake() {
       popup.style.display = "none";
       cakeContainer.style.display = "block";
       setTimeout(() => {
         cutCake();
-      }, 2500);
+      }, 2000);
     }
 
     function cutCake() {
-      cake.style.transform = "scale(0.95) rotate(-3deg)";
-      cake.style.transition = "0.8s ease";
-      finalMsg.style.display = "block";
-      document.getElementById("bgMusic").play();
-      setTimeout(() => {
-        extraMsg.style.display = "block";
-      }, 2500);
+      cake.style.transform = "scale(0.95) rotate(-5deg)";
+      cake.style.transition = "0.6s ease";
+      music.play();
       startFireworks();
+      setTimeout(() => {
+        gift.style.display = "block";
+      }, 4000);
     }
 
     function startFireworks() {
@@ -213,7 +212,6 @@
           color: `hsl(${Math.random() * 360}, 100%, 60%)`
         });
       }
-
       const interval = setInterval(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles.forEach(p => {
@@ -226,8 +224,7 @@
           p.dy += 0.05;
         });
       }, 30);
-
-      setTimeout(() => clearInterval(interval), 5000);
+      setTimeout(() => clearInterval(interval), 6000);
     }
   </script>
 </body>
